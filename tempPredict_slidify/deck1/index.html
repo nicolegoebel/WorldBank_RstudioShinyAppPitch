@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>Investigating Climate Hindcasts and Predictions of General Circulation Models</title>
+	<meta name="description" content="Investigating Climate Hindcasts and Predictions of General Circulation Models">
+	<meta name="author" content="Nicole Goebel">
+	<meta name="generator" content="slidify" />
+	
+	<!-- LOAD STYLE SHEETS -->
+	<link rel="stylesheet" href="libraries/frameworks/html5slides/default/styles.css">
+	<link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />  <link rel="stylesheet" href = "assets/css/ribbons.css">
+  
+</head>
+<body style='display: none'>
+	<section class='slides layout-regular template-regular'>
+     <article class="" id="slide-1" style="background:;">
+  <h3>Goal: to Investigate Hindcasts and Predictions in Temperature of General Circulation Models (GCMs)</h3>
+  <ul>
+<li>The World Bank hosts predictive model outputs of changes in temperature and precipitation under different climate change scenarios and time periods, avalable in the <a href="http://sdwebx.worldbank.org/climateportal/index.cfm">World Bank Climate Change Knowledge Portal</a>. </li>
+<li>Ensembles of different GCMs hindcast (<code>past</code> scenario) and predict (<code>a2</code> or <code>b1</code> scenarios) changes in air temperature and precipitation world-wide.</li>
+<li>These GCMs are the same models used in the <a href="http://www.ipcc.ch/publications_and_data/publications_ipcc_fourth_assessment_report_synthesis_report.htm">Intergovernmental Panel on Climate Change 4th Asessment Report</a>.</li>
+<li>The application presented here allows the user to investigate these temperature hindcasts and predictions across the globe for two different scenarios and/or years.</li>
+</ul>
+
+</article>
+
+<article class="class" id="id" style="background:;">
+  <h3>Obtaining Model Data</h3>
+  <ul>
+<li>Model data and functions to manipulate data are available in the <code>rWBclimate</code> R package.</li>
+<li>This package can be found on <a href="http://github.com/ropensci/rWBclimate">GitHub</a> and is described in the R <a href="http://cran.r-project.org/web/packages/rWBclimate/vignettes/rWBclimate.pdf">vignette</a> and <a href="http://cran.r-project.org/web/packages/rWBclimate/rWBclimate.pdf">pdf</a>.</li>
+<li>The extraction of annually averaged temperature data for all countries is demonstrated here:</li>
+</ul>
+
+<pre><code class="r">library(rWBclimate)
+world &lt;- c(NoAm_country, SoAm_country, Eur_country, Asia_country, 
+           Africa_country, Oceana_country)
+world&lt;-world[! world %in% c(&quot;UMI&quot;)]  #remove &quot;UMI&quot;
+world_dat &lt;- get_ensemble_temp(world, &quot;annualavg&quot;, 
+           start=1920, end=1939) #select one timeframe to plot
+world_dat$data &lt;- as.numeric(as.character(world_dat$data)) #numeric
+world_dat&lt;-subset(world_dat,world_dat$percentile==50) #use median 
+world_dat$years=paste(world_dat$fromYear,world_dat$toYear, sep=&quot;-&quot;)
+world_dat&lt;-subset(world_dat, select=-c(percentile, fromYear, toYear)) 
+</code></pre>
+
+</article>
+
+<article class="class" id="id" style="background:;">
+  <h3>Plotting Model Data</h3>
+  <ul>
+<li>The climate_map() function is available in the <code>rWBclimate</code> package and is used to plot the data on a world map (below). Path is set for caching kml files, which contain location data.</li>
+</ul>
+
+<pre><code class="r">options(kmlpath = &quot;/Users/nicolegoebel/Dropbox/Courses/Coursera_Data_Science_2014/DevelopingDataProducts/tempPredict_slidify&quot;)
+world_map_df &lt;- create_map_df(world)
+climate_map(world_map_df,world_dat,return_map = T) + scale_fill_gradient2(name=&quot;Temperature&quot;, limits=c(-20, 34), low=&quot;blue&quot;, mid=&quot;white&quot;, high = &quot;red&quot;)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" /></p>
+
+</article>
+
+<article class="class" id="id" style="background:;">
+  <h3>Instructions for App: Available Selections</h3>
+  <ul>
+<li>The user makes two sets of selections. Each selection plots a global temperature map.</li>
+<li>For each map the user chooses:
+
+<ol>
+<li>one scenario: 
+
+<ul>
+<li><code>past</code> (years prior to 2000) </li>
+<li><code>a1</code> (a future scenario where greenhouse gases reach 850 ppm by 2100)</li>
+<li><code>b1</code> (a future scenario where greenhouse gases reach 550 ppm by 2100)</li>
+</ul></li>
+<li>a two-decade period over which an annual average is predicted, which is conditional on the selected scenario:
+
+<ul>
+<li>past scenario: &quot;1920-1939&quot;, &quot;1940-1959&quot;, &quot;1960-1979&quot;, &quot;1980-1999&quot;</li>
+<li>future scenarios: &quot;2020-2039&quot;, &quot;2040-2059&quot;,&quot;2060-2079&quot;, &quot;2080-2099&quot;</li>
+</ul></li>
+</ol></li>
+<li>The result is 3 maps (e.g., map in previous slide) showing the two selected hindcasts and/or predictions and a third map showing the difference between the two.</li>
+<li>check it out at: <a href="https://nicolegoebel.shinyapps.io/temperature_map_prediction/">https://nicolegoebel.shinyapps.io/temperature_map_prediction/</a></li>
+</ul>
+
+</article>
+
+  </section>
+</body>
+  <!-- LOAD JAVASCRIPTS  -->
+	<script src='libraries/frameworks/html5slides/default/slides.js'></script>
+	<!-- LOAD HIGHLIGHTER JS FILES -->
+	<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+	 
+	</html>
