@@ -4,19 +4,21 @@ subtitle    : "Temperature Predictions at https://nicolegoebel.shinyapps.io/temp
 author      : Nicole Goebel
 job         : Coursera Data Science Specialization - Developing Data Products
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight.js  # {highlight.js, prettify, highlight}
+highlighter : highlight.js   # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : []            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
----
+--- 
 
 ## Goal: to Investigate Hindcasts and Predictions in Temperature of General Circulation Models (GCMs)
 
 - The World Bank hosts predictive model outputs of changes in temperature and precipitation under different climate change scenarios and time periods, avalable in the [World Bank Climate Change Knowledge Portal](http://sdwebx.worldbank.org/climateportal/index.cfm). 
 - Ensembles of different GCMs hindcast (`past` scenario) and predict (`a2` or `b1` scenarios) changes in air temperature and precipitation world-wide.
 - These GCMs are the same models used in the [Intergovernmental Panel on Climate Change 4th Asessment Report](http://www.ipcc.ch/publications_and_data/publications_ipcc_fourth_assessment_report_synthesis_report.htm).
-- The application presented here allows the user to investigate these temperature hindcasts and predictions across the globe for two different scenarios and/or years.
+- The application presented here allows the user to investigate these temperature hindcasts and predictions across the globe for two different scenarios and/or years in order to answer questions such as: 
+
+        How much is temperature predicted to change across land masses of the world?
 
 --- .class #id 
 
@@ -68,4 +70,4 @@ climate_map(world_map_df,world_dat,return_map = T) + scale_fill_gradient2(name="
       - past scenario: "1920-1939", "1940-1959", "1960-1979", "1980-1999"
       - future scenarios: "2020-2039", "2040-2059","2060-2079", "2080-2099"
 - The result is 3 maps (e.g., map in previous slide) showing the two selected hindcasts and/or predictions and a third map showing the difference between the two.
-- check it out at: (https://nicolegoebel.shinyapps.io/temperature_map_prediction/)
+- check it out at: https://nicolegoebel.shinyapps.io/temperature_map_prediction/
